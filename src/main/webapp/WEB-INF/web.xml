@@ -1,0 +1,56 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  		<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+			<init-param>
+				<param-name>encoding</param-name>
+				<param-value>UTF-8</param-value>
+			</init-param>
+		</filter>
+		<filter-mapping>
+			<filter-name>encoding</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		<!--restful过滤器-->
+		<filter>
+			<filter-name>restful</filter-name>
+			<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+		</filter>
+		<filter-mapping>
+			<filter-name>restful</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+  
+  <servlet>
+		<servlet-name>springmvc</servlet-name>
+		<!--servlet-class中的值是spring-webmvc包提供的类，即前端控制器，用于控制所有请求 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<!---加载配置-->
+			<param-value>classpath:application-context.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>	      
+	    <url-pattern>/</url-pattern>    
+	</servlet-mapping>
+		<!--spring前端控制器注册结束-->
+		<!--配置默认请求的页面，比如http://localhost:8080/ssm01
+		以上请求默认会有一个处理页面，一般默认值index.jsp或index.html
+		如下代码，即默认打开login.jsp。
+		优先级按代码顺序
+		-->
+		<!--请注意是在web.xml文件中-->
+		<!--编码拦截器或过滤器，必须是第一个拦截器-->
+		<welcome-file-list>
+  <welcome-file>LoginSign/LoginSign.jsp</welcome-file>
+  </welcome-file-list>
+		
+</web-app>
