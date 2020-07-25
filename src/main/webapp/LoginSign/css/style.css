@@ -1,14 +1,16 @@
-*, *:before, *:after {
+*,*:before, *:after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+
 body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    background: #ededed;form 
+    background: #ededed;
 }
 
+	
 input, button {
     border: none;
     outline: none;
@@ -28,7 +30,7 @@ input, button {
     left: 50%;
     top: 50%;
     width: 900px;
-    height: 550px;
+    height: 620px;
     margin: -300px 0 0 -450px;
     background: #fff;
 }
@@ -275,7 +277,7 @@ input {
 .sign-up {
     -webkit-transform: translate3d(-900px, 0, 0);
     transform: translate3d(-900px, 0, 0);
-    padding: 50px 30px 0;
+    padding: 40px 30px 0;
 }
 .content.s--signup .sign-up {
     -webkit-transform: translate3d(0, 0, 0);

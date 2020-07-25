@@ -19,4 +19,15 @@
     <!--将springmvc，功能全开-->
     <mvc:annotation-driven conversion-service="convertService" />
     <bean id="convertService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+    <!--静态资源不拦截-->
+    <mvc:resources location="/" mapping="/*"/>
+    <!--注册拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <bean class="cn.edu.lingnan.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

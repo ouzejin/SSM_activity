@@ -50,7 +50,7 @@
 		<!--请注意是在web.xml文件中-->
 		<!--编码拦截器或过滤器，必须是第一个拦截器-->
 		<welcome-file-list>
-  <welcome-file>LoginSign/LoginSign.jsp</welcome-file>
+  <welcome-file>LoginSign/loginsign.jsp</welcome-file>
   </welcome-file-list>
 		
 </web-app>
