@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.mapper.ApplyMapper">
+	
+	<resultMap id="BaseResultMap" type="cn.edu.lingnan.pojo.Apply">
+        <id column="Sno" property="sNo"/>
+        <id column="applyTime" property="applyTime"/>
+        <result column="Sname" property="sName"/>
+        <result column="Aname" property="aName"/>
+        <result column="Acontent" property="aContent"/>
+        <result column="Atime" property="aTime"/>
+        <result column="Aplace" property="aPlace"/>
+        <result column="State" property="state"/>
+        <result column="Phone" property="phone"/>
+    </resultMap>
+    
+	<select id="queryList" resultMap="BaseResultMap" parameterType="Integer">
+        select * from applyactivity limit #{page},#{size}
+    </select>
+
+    <select id="countNum" resultType="Integer">
+        select count(*) from applyactivity
+    </select>
+    
+	<!-- 	按学号查找我申请的活动 -->
+	<select id="findMyApply" resultType="apply">
+		select * from applyactivity where sNo=${sNo} order by applyTime desc
+	</select>
+	
+	<!-- 	插入申请活动 -->
+	<insert id="applyActivity">
+		insert into applyactivity
+		(sNo,sName,aName,
+		<if test="aContent!=null">
+			aContent,
+		</if>
+		aTime,aPlace,applyTime,phone)
+		values
+		(#{sNo},#{sName},#{aName},
+		<if test="aContent!=null">
+			#{aContent},
+		</if>#{aTime},#{aPlace},#{applyTime},#{phone})
+	</insert>
+	
+	<!-- 	根据学号和申请时间来查找申请的活动 -->
+	<select id="findApply" resultType="apply">
+		select * from applyactivity where sNo=#{sNo} and applyTime=#{applyTime}
+	</select>
+	
+	<!-- 	更新申请活动的审核状态 -->
+	<update id="changeState">
+		update applyactivity set state=#{state} where sNo=#{sNo} and applyTime=#{applyTime}
+	</update>
+</mapper>

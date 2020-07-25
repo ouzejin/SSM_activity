@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.mapper.ApplicantMapper">
+	<resultMap id="BaseResultMap" type="cn.edu.lingnan.pojo.Applicant">
+        <id column="sno" property="sNo"/>
+        <result column="sname" property="sName"/>
+        <result column="grade" property="grade"/>
+        <result column="cname" property="cName"/>
+        <result column="phone" property="phone"/>
+        <result column="password" property="password"/>
+        <result column="asuper" property="aSuper"/>
+    </resultMap>
+	<!-- 查找所有的申请人员(不包括管理员) -->
+	<select id="getAllApplicant" resultType="applicant">
+		select * from applicant where aSuper!=1
+	</select>
+	<!-- 	按学号删除申请人员 -->
+	<delete id="deleteBySno">
+		delete from applicant where sNo=#{sNo}
+	</delete>
+	<!-- 	按学号更新申请人员信息 -->
+	<update id="updateBySno">
+		update applicant set
+		<trim suffixOverrides=",">
+	     	<if test="sName!=null">
+	     		sName=#{sName},
+	     	</if>
+	     	<if test="grade!=null">
+	     		Grade=#{grade},
+	     	</if>
+	     	<if test="cName!=null">
+	     		cName=#{cName},
+	     	</if>
+	     	<if test="phone!=null">
+	     		Phone=#{phone},
+	     	</if>
+	     	<if test="password!=null">
+	     		Password=#{password},
+	     	</if>
+     	</trim>
+     	where sNo = #{sNo}
+	</update>
+	<!-- 	按学号查找一个申请人员 -->
+	<select id="getBySno" resultType="applicant">
+		select * from applicant where sNo=#{sNo}
+	</select>
+	<!-- 	插入申请人员/注册 -->
+	<insert id="insertApplicant">
+		insert into applicant
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	     	<if test="sNo!=null">
+	     		sNo,
+	     	</if>
+	     	<if test="sName!=null">
+	     		sName,
+	     	</if>
+	     	<if test="grade!=null">
+	     		Grade,
+	     	</if>
+	     	<if test="cName!=null">
+	     		cName,
+	     	</if>
+	     	<if test="phone!=null">
+	     		Phone,
+	     	</if>
+	     	<if test="password!=null">
+	     		Password,
+	     	</if>
+     	</trim>
+     	 values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+	        <if test="sNo!=null">
+	     		#{sNo},
+	     	</if>
+	     	<if test="sName!=null">
+	     		#{sName},
+	     	</if>
+	     	<if test="grade!=null">
+	     		#{grade},
+	     	</if>
+	     	<if test="cName!=null">
+	     		#{cName},
+	     	</if>
+	     	<if test="phone!=null">
+	     		#{phone},
+	     	</if>
+	     	<if test="password!=null">
+	     		#{password},
+	     	</if>
+        </trim>
+	</insert>
+	
+	<!-- 	按特点搜索方式搜索申请人员 -->
+	<select id="searchApplicant" resultType="applicant">
+		select * from applicant where 
+		<if test="searchType=='sno'">
+	     		sNo 
+	    </if>
+	    <if test="searchType=='sname'">
+	     		sName 
+	    </if> 
+	    <if test="searchType=='cname'">
+	     		cName 
+	    </if> 
+	    <if test="searchType=='grade'">
+	     		Grade 
+	    </if>  
+		like concat('%',#{search},'%')
+	</select>
+	
+	<!-- 	登录 -->
+	<select id="login" resultType="applicant">
+     	select * from applicant where sNo = #{sNo} and password = #{password} 
+     </select>     	
+    	
+    <!--     	通过学号查找手机号 -->
+    	<select id="getByPhone" resultType="applicant">
+        	select * from applicant where phone = #{phone}
+    	</select>
+    	
+	<!--     	通过学号查找用户名 -->
+		<select id="getApplicantName" resultType="String">
+			select sName from applicant where sNo=#{sNo}
+		</select>
+		
+	<!--     	通过学号查找用户权限 -->
+		<select id="getApplicantSuper" resultType="String">
+			select aSuper from applicant where sNo=#{sNo}
+		</select>
+	<!-- 	通过学号和手机号查找用户	 -->
+		<select id="findBySnoPhone" resultType="applicant">
+			select * from applicant where sNo=#{sNo} and phone=#{phone}
+		</select>
+	<!-- 	更新用户信息 -->
+	<update id="updateUserInfo">
+		update applicant set
+		<trim suffixOverrides=",">
+			<if test="grade!=null">
+				Grade = #{grade},
+			</if>
+			<if test="cName!=null">
+				cName = #{cName},
+			</if>		
+			<if test="phone!=null">
+				Phone = #{phone},
+			</if>
+		</trim>
+		where sNo = #{sNo}		
+	</update>
+	
+	<select id="queryList" resultMap="BaseResultMap" parameterType="Integer">
+        select * from applicant limit #{page},#{size}
+    </select>
+
+    <select id="countNum" resultType="Integer">
+        select count(*) from applicant
+    </select>
+</mapper>

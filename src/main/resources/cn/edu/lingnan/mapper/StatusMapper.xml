@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.mapper.StatusMapper">
+
+    <select id="getList" resultType="ActStatus">
+        select * from actstatus where aTime between #{startaTime} and #{endaTime} order by aTime
+    </select>
+
+    <select id="getApplicantCount" resultType="Integer">
+       select count(*) from applicant where asuper!=#{aSuper};
+    </select>
+
+    <select id="getActivityCount" resultType="Integer">
+        select count(*) from activity;
+    </select>
+
+    <select id="getExamineConut" resultType="Integer">
+         select count(*) from examine;
+    </select>
+
+    <insert id="insertActStatus">
+        insert into actstatus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="aTime!=null">
+              aTime,
+           </if>
+
+           <if test="aNum!=null">
+               aNum,
+           </if>
+            <if test="pNum!=null">
+                pNum,
+            </if>
+            <if test="uNum!=null">
+                uNum,
+            </if>
+        </trim>
+         values
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="aTime!=null">
+             #{aTime},
+         </if>
+             <if test="aNum!=null">
+                 #{aNum},
+             </if>
+             <if test="pNum!=null">
+                 #{pNum},
+             </if>
+             <if test="uNum!=null">
+                 #{uNum},
+             </if>
+         </trim>
+    </insert>
+
+    <select id="getAllAtime" resultType="ActStatus">
+        select * from actstatus
+    </select>
+
+    <select id="getTimeCount" resultType="Integer">
+        SELECT count(*) FROM actstatus WHERE aTime= DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+
+
+    <update id="updateNum">
+        update actstatus set
+        <trim suffixOverrides=",">
+            <if test="aNum != null">
+                aNum = #{aNum},
+            </if>
+            <if test="uNum != null">
+                uNum = #{uNum},
+            </if>
+            <if test="pNum != null">
+                pNum = #{pNum},
+            </if>
+        </trim>
+        where aTime = #{aTime}
+    </update>
+
+</mapper>

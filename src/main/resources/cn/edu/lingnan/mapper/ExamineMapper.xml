@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.mapper.ExamineMapper">
+
+	<resultMap id="BaseResultMap" type="cn.edu.lingnan.pojo.Examine">
+        <id column="Sno" property="sNo"/>        
+        <result column="Sname" property="sName"/>
+        <result column="Aname" property="aName"/>
+        <result column="Acontent" property="aContent"/>
+        <result column="Atime" property="aTime"/>
+        <result column="Aplace" property="aPlace"/>        
+        <result column="Phone" property="phone"/>
+        <result column="applyTime" property="applyTime"/>
+    </resultMap>
+    
+    <select id="queryList" resultMap="BaseResultMap" parameterType="Integer">
+        select * from examine  limit #{page},#{size}
+    </select>
+
+    <select id="countNum" resultType="Integer">
+        select count(*) from examine
+    </select>
+    
+    <select id="queryResultList" resultMap="BaseResultMap" parameterType="Integer">
+        select * from examineresult  limit #{page},#{size} 
+    </select>
+
+    <select id="countResultNum" resultType="Integer">
+        select count(*) from examineresult
+    </select>
+    
+	<!-- 查找所有的待审核活动 -->
+	<select id="getAllExamine" resultType="examine">
+		select * from examine
+	</select>
+	
+	<!-- 	插入待审核活动 -->
+	<insert id="insertExamine">
+		insert into examine
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	     	<if test="sNo!=null">
+	     		sNo,
+	     	</if>
+	     	<if test="sName!=null">
+	     		sName,
+	     	</if>
+	     	<if test="aName!=null">
+	     		aName,
+	     	</if>
+	     	<if test="aContent!=null">
+	     		aContent,
+	     	</if>
+	     	<if test="aTime!=null">
+	     		aTime,
+	     	</if>
+	     	<if test="aPlace!=null">
+	     		aPlace,
+	     	</if>
+	     	<if test="phone!=null">
+	     		Phone,
+	     	</if>
+	     	<if test="applyTime!=null">
+	     		applyTime,
+	     	</if>
+     	</trim>
+     	 values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+	        <if test="sNo!=null">
+	     		#{sNo},
+	     	</if>
+	     	<if test="sName!=null">
+	     		#{sName},
+	     	</if>
+	     	<if test="aName!=null">
+	     		#{aName},
+	     	</if>
+	     	<if test="aContent!=null">
+	     		#{aContent},
+	     	</if>
+	     	<if test="aTime!=null">
+	     		#{aTime},
+	     	</if>
+	     	<if test="aPlace!=null">
+	     		#{aPlace},
+	     	</if>
+	     	<if test="phone!=null">
+	     		#{phone},
+	     	</if>
+	     	<if test="applyTime!=null">
+	     		#{applyTime},
+	     	</if>
+        </trim>
+	</insert>
+	
+	<!-- 	将审核后的活动插入审核结果表 -->
+	<insert id="insertResult">
+		insert into examineresult 
+		(sNo,sName,aName,
+		<if test="aContent!=null">
+	     		aContent,
+	    </if>
+		aTime,aPlace,Phone,State,Checktime,Checkman)
+		values
+		(#{sNo},#{sName},#{aName},
+		<if test="aContent!=null">
+	     		#{aContent},
+	    </if>
+		#{aTime},#{aPlace},#{phone},#{state},#{checktime},#{checkman})
+	</insert>
+	
+	<!-- 	删除审核过的活动 -->
+	<delete id="deleteExamine">
+		delete from examine where sNo=#{sNo} and applyTime=#{applyTime}
+	</delete>
+	
+	<!-- 	通过学号和时间查找待审核活动 -->
+	<select id="findExamine" resultType="examine">
+		select * from examine where sNo=#{sNo} and applyTime=#{applyTime}
+	</select>
+	
+	<!-- 	将通过的活动插入到活动表中 -->
+	<insert id="intoActivity">
+		insert into activity
+		(aName,aMan,
+		<if test="aContent!=null">
+	     		aContent,
+	    </if>
+		aTime,aPlace,aManPhone)
+		values
+		(#{aName},#{sName},
+		<if test="aContent!=null">
+	     		#{aContent},
+	    </if>
+	    #{aTime},#{aPlace},#{phone})
+	</insert>
+	
+	<!-- 	按特点搜索方式搜索待审核活动 -->
+	<select id="searchExamine" resultType="examine">
+		select * from examine where 
+		<if test="searchType=='sno'">
+	     		sNo 
+	    </if>
+	    <if test="searchType=='sname'">
+	     		sName 
+	    </if> 
+	    <if test="searchType=='aname'">
+	     		aName 
+	    </if> 
+	    <if test="searchType=='aplace'">
+	     		aPlace 
+	    </if>  
+		like concat('%',#{search},'%')
+	</select>
+	
+	<!-- 	查找所有审核结果 -->
+	<select id="getAllResult" resultType="examine">
+		select * from examineresult
+	</select>
+	
+	<!-- 	按查找方式查找审核结果 -->
+	<select id="searchResult" resultType="examine">
+		select * from examineresult where 
+		<if test="searchType=='checkman'">
+	     		Checkman 
+	    </if>
+	    <if test="searchType=='checktime'">
+	     		Checktime 
+	    </if> 
+	    <if test="searchType=='aname'">
+	     		aName 
+	    </if> 
+	    <if test="searchType=='aplace'">
+	     		aPlace 
+	    </if>  
+		like concat('%',#{search},'%')
+	</select>
+	
+	<!-- 普通用户查找自己负责的活动-->
+	<select id="userGetMyActivity" resultType="examine">
+        select * from examineresult where sNo=#{sNo} and state=#{state}
+	</select>
+</mapper>

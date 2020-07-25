@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.mapper.ActivityMapper">
+	<resultMap id="BaseResultMap" type="cn.edu.lingnan.pojo.Activity">
+	    <id column="Ano" property="aNo" jdbcType="INTEGER" />
+		<result column="Aname" property="aName" jdbcType="VARCHAR"/>        
+		<result column="Aman" property="aMan" jdbcType="VARCHAR"/>
+		<result column="Acontent" property="aContent" jdbcType="VARCHAR"/>
+		<result column="Atime" property="aTime" jdbcType="VARCHAR"/>
+		<result column="Aplace" property="aPlace" jdbcType="VARCHAR"/>
+		<result column="Astate" property="aState" jdbcType="VARCHAR"/>
+		<result column="Amanphone" property="aManPhone" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+    <!-- 查找所有的活动 -->
+    <select id="getAllActivity" resultType="Activity">
+		select * from activity
+	</select>
+
+    <!--根据活动编号查找一个活动-->
+    <select id="getByAno" resultType="Activity">
+        select * from activity where Ano=#{aNo}
+    </select>
+
+    <!--根据活动编号更新一个活动-->
+    <update id="updateActivityByAno">
+        update activity set
+        <trim suffixOverrides=",">
+            <if test="aName!=null">
+                Aname=#{aName},
+            </if>
+            <if test="aMan!=null">
+                Aman=#{aMan},
+            </if>
+            <if test="aContent!=null">
+            Acontent=#{aContent},
+            </if>
+            <if test="aTime!=null">
+                Atime=#{aTime},
+            </if>
+            <if test="aPlace!=null">
+                Aplace=#{aPlace},
+            </if>
+            <if test="aState!=null">
+                Astate=#{aState},
+            </if>
+            <if test="aManPhone!=null">
+                Amanphone=#{aManPhone},
+            </if>
+        </trim>
+         where Ano=#{aNo}
+    </update>
+
+    <!--根据活动编号删除-->
+    <delete id="deleteActivityByAno">
+        delete from activity where Ano=#{aNo}
+    </delete>
+
+
+
+    <!--插入一个活动-->
+    <insert id="insertActivity">
+        insert into activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aName!=null">
+                Aname,
+            </if>
+            <if test="aMan!=null">
+                Aman,
+            </if>
+            <if test="aContent!=null">
+                Acontent,
+            </if>
+            <if test="aTime!=null">
+                Atime,
+            </if>
+            <if test="aPlace!=null">
+                Aplace,
+            </if>
+            <if test="aState!=null">
+                Astate,
+            </if>
+            <if test="aManPhone!=null">
+                Amanphone,
+            </if>
+        </trim>
+         values
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+             <if test="aName!=null">
+                 #{aName},
+             </if>
+             <if test="aMan!=null">
+                 #{aMan},
+             </if>
+             <if test="aContent!=null">
+                 #{aContent},
+             </if>
+             <if test="aTime!=null">
+                 #{aTime},
+             </if>
+             <if test="aPlace!=null">
+                 #{aPlace},
+             </if>
+             <if test="aState!=null">
+                 #{aState},
+             </if>
+             <if test="aManPhone!=null">
+                 #{aManPhone},
+             </if>
+         </trim>
+    </insert>
+    
+    <!--根据时间段和活动名称查询活动-->
+    <select id="searchActivity" resultType="Activity">
+        select * from activity
+        <where>
+            <if test="aTime!=null">
+                 Atime=#{aTime}
+            </if>
+            <if test="aName!=null">
+               and Aname like concat('%',#{aName},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="queryList" resultMap="BaseResultMap" parameterType="Integer">
+        select * from activity limit #{page},#{size}
+    </select>
+
+    <select id="countNum" resultType="Integer">
+        select count(*) from activity
+    </select>	
+</mapper>
