@@ -10,7 +10,7 @@
     <properties>
   	<mybatis.version>3.5.3</mybatis.version>
   	<spring.webmvc.version>5.2.2.RELEASE</spring.webmvc.version>
-  	<mysql.version>5.1.47</mysql.version>
+  	<mysql.version>8.0.16</mysql.version>
   	<mybatis.gen.version>1.4.0</mybatis.gen.version>
   	<aspectjweaver.version>1.9.1</aspectjweaver.version>
   	<slf4j.log4j12.version>1.7.6</slf4j.log4j12.version>
