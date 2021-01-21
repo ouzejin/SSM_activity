@@ -20,7 +20,7 @@
   	<spring.aop.version>5.2.2.RELEASE</spring.aop.version>
   	<javax.servlet.api>3.1.0</javax.servlet.api>
   	<hibernate.validator>6.0.9.Final</hibernate.validator>
-  	<jackson.databind>2.9.5</jackson.databind>
+  	<jackson.databind>2.9.10.7</jackson.databind>
   	<jackson.core>2.9.5</jackson.core>
   	<jackson.annotations>2.9.5</jackson.annotations>
   	<fastjson>1.2.28</fastjson>
